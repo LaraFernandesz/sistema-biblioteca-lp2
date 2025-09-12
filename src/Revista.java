@@ -1,4 +1,3 @@
-
 public class Revista extends ItemDoAcervo {
     private int edicao;
 
@@ -13,6 +12,16 @@ public class Revista extends ItemDoAcervo {
 
     public void setEdicao(int edicao) {
         this.edicao = edicao;
+    }
+
+    @Override
+    public int getPrazo() {
+        return 7; // Revistas: 7 dias
+    }
+
+    @Override
+    public double getValorMultaPorDiaAtraso() {
+        return 1.00; // Revistas: R$ 1,00/dia
     }
 
     @Override

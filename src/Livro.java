@@ -1,4 +1,3 @@
-
 public class Livro extends ItemDoAcervo {
     private String autor;
 
@@ -12,11 +11,21 @@ public class Livro extends ItemDoAcervo {
     }
 
     public void setAutor(String autor) {
-        if (autor == "") {
-            System.out.println("Erro: título inválido.");
+        if (autor == null || autor.trim().isEmpty()) {
+            System.out.println("Erro: autor inválido.");
         } else {
             this.autor = autor;
         }
+    }
+
+    @Override
+    public int getPrazo() {
+        return 14; // Livros: 14 dias
+    }
+
+    @Override
+    public double getValorMultaPorDiaAtraso() {
+        return 0.75; // Livros: R$ 0,75/dia
     }
 
     @Override

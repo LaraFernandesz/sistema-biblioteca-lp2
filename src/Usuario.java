@@ -18,7 +18,7 @@ public class Usuario {
     }
 
     public void setNome(String nome) {
-        if(nome.isEmpty()) {
+        if(nome == null || nome.isEmpty()) {
             System.out.println("Erro: valor inválido.");
         } else {
             this.nome = nome;
@@ -26,7 +26,7 @@ public class Usuario {
     }
 
     public void setId(String id) {
-        if(id.isEmpty()) {
+        if(id == null || id.isEmpty()) {
             System.out.println("Erro: valor inválido.");
         } else {
             this.id = id;

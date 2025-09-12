@@ -1,4 +1,4 @@
-public class ItemDoAcervo {
+public abstract class ItemDoAcervo {
     private String titulo;
     private int ano;
     private StatusLivro status;
@@ -27,7 +27,7 @@ public class ItemDoAcervo {
     }
 
     public void setTitulo(String titulo) {
-        if (titulo == "") {
+        if (titulo == null || titulo.trim().isEmpty()) {
             System.out.println("Erro: título inválido.");
         } else {
             this.titulo = titulo;
@@ -42,4 +42,7 @@ public class ItemDoAcervo {
         this.status = status;
     }
 
+    // Regras polimórficas
+    public abstract int getPrazo();
+    public abstract double getValorMultaPorDiaAtraso();
 }

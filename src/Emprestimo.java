@@ -54,4 +54,15 @@ public class Emprestimo {
     public void setDataDevolucaoReal(LocalDate dataDevolucaoReal) {
         this.dataDevolucaoReal = dataDevolucaoReal;
     }
+
+    @Override
+    public String toString() {
+        return "Emprestimo{" +
+                "item=" + item.getTitulo() +
+                ", usuario=" + usuario.getNome() +
+                ", emprestimo=" + dataEmprestimo +
+                ", devolução prevista=" + dataDevolucaoPrevista +
+                (dataDevolucaoReal != null ? ", devolvido em=" + dataDevolucaoReal : "") +
+                '}';
+    }
 }

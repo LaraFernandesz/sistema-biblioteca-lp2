@@ -1,15 +1,52 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.time.LocalDate;
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        Biblioteca biblioteca = new Biblioteca();
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        // Usuário
+        Usuario usuario = new Usuario("Thiago", "123");
+        biblioteca.cadastrarUsuario(usuario);
+
+        // Itens
+        Livro livroJava = new Livro("Java Como Programar", "Deitel", 2014);
+        Livro livroBrasCubas = new Livro("Memórias Póstumas de Brás Cubas", "Machado de Assis", 1881);
+        Revista revistaVeja = new Revista("Veja - Abril", 2015, 1);
+        DVD dvdReiLeao = new DVD("O Rei Leão", 1994, 89);
+
+        biblioteca.cadastrarItem(livroJava);
+        biblioteca.cadastrarItem(livroBrasCubas);
+        biblioteca.cadastrarItem(revistaVeja);
+        biblioteca.cadastrarItem(dvdReiLeao);
+
+        System.out.println("\n== Acervo inicial ==");
+        biblioteca.listarAcervo();
+
+        // Empréstimo do DVD
+        System.out.println("\n== Empréstimo do DVD ==");
+        biblioteca.realizarEmprestimo("123", "O Rei Leão");
+
+        // Ver data prevista (deve ser hoje + 3 dias)
+        Emprestimo empDVD = biblioteca.buscarEmprestimoAtivoPorItem(dvdReiLeao);
+        if (empDVD != null) {
+            System.out.println("Data prevista de devolução (DVD): " + empDVD.getDataDevolucaoPrevista());
+
+            // Simular devolução com 5 dias de atraso:
+            // força a data prevista para 5 dias atrás
+            empDVD.setDataDevolucaoPrevista(LocalDate.now().minusDays(5));
+            System.out.println("\n== Devolução do DVD com 5 dias de atraso ==");
+            biblioteca.realizarDevolucao("O Rei Leão"); // multa esperada: 5 * 2,00 = 10,00
         }
+
+        // Buscar (Exercício 3)
+        System.out.println("\n== Busca por termo: 'Machado' ==");
+        List<ItemDoAcervo> resultado = biblioteca.buscar("Machado");
+        for (ItemDoAcervo item : resultado) {
+            System.out.println(item);
+        }
+
+        System.out.println("\n== Acervo final ==");
+        biblioteca.listarAcervo();
     }
 }
