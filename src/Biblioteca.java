@@ -140,12 +140,25 @@ public class Biblioteca {
     }
 
     public void cadastrarItem(ItemDoAcervo item) {
-        acervo.add(item);
+        if (item instanceof Validavel) {
+            Validavel v = (Validavel) item;
+            if (!v.validar()) {
+                System.out.println("Erro: item inválido. Cadastro não realizado.");
+                return;
+            }
+        }
+
+        this.acervo.add(item);
         System.out.println("O item " + item.getTitulo() + " foi cadastrado.");
     }
 
     public void cadastrarUsuario(Usuario usuario) {
-        listaDeUsuarios.add(usuario);
+        if (!usuario.validar()) {
+            System.out.println("Erro: usuário inválido. Cadastro não realizado.");
+            return;
+        }
+
+        this.listaDeUsuarios.add(usuario);
         System.out.println("O usuário " + usuario.getNome() + " foi cadastrado.");
     }
 
@@ -158,7 +171,7 @@ public class Biblioteca {
 
     public static void main(String[] args) {
 
-        Livro livroJava = new Livro("Java Como Programar", "Deitel", 2014);
+        Livro livroJavaComoProgramar = new Livro("Java Como Programar", "Deitel", 2014, "1234567890123");
         Livro livroMemoria = new Livro("Memórias Póstumas de Brás Cubas", "Machado de Assis", 1881);
         Usuario usuario = new Aluno("Thiago", "123");
 

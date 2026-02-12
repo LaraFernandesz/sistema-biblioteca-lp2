@@ -2,13 +2,24 @@ package src;
 
 import java.util.Objects;
 
-public abstract class Usuario implements Imprimivel {
+public abstract class Usuario implements Imprimivel, Validavel {
+
     private String nome;
     private String id;
 
     public Usuario(String nome, String id) {
         setNome(nome);
         setId(id);
+    }
+
+    @Override
+    public boolean validar() {
+        return nome != null && nome.length() > 3;
+    }
+
+    @Override
+    public String formatarParaEtiqueta() {
+        return "CARTÃO DE ACESSO - Usuário: " + nome + " | ID: " + id;
     }
 
     public String getNome() {
@@ -20,7 +31,7 @@ public abstract class Usuario implements Imprimivel {
     }
 
     public void setNome(String nome) {
-        if (nome.isEmpty()) {
+        if(nome == null || nome.isEmpty()) {
             System.out.println("Erro: valor inválido.");
         } else {
             this.nome = nome;
@@ -28,7 +39,7 @@ public abstract class Usuario implements Imprimivel {
     }
 
     public void setId(String id) {
-        if (id.isEmpty()) {
+        if(id == null || id.isEmpty()) {
             System.out.println("Erro: valor inválido.");
         } else {
             this.id = id;
