@@ -18,28 +18,24 @@ public class Biblioteca {
     }
 
     public void realizarEmprestimo(String idUsuario, String titulo) {
-
-        // 1 - Buscar usuário
         Usuario usuarioDoEmprestimo = pesquisarUsuarioPorId(idUsuario);
         if (usuarioDoEmprestimo == null) {
             System.out.println("Erro: usuário não cadastrado.");
             return;
         }
 
-        // 2 - Buscar item
         ItemDoAcervo itemDoEmprestimo = pesquisarItemPorTitulo(titulo);
         if (itemDoEmprestimo == null) {
             System.out.println("Erro: item não cadastrado.");
             return;
         }
 
-        // 3 - Verificar se já está emprestado
         if (itemDoEmprestimo.getStatus() == StatusLivro.EMPRESTADO) {
             System.out.println("Erro: item já emprestado.");
             return;
         }
 
-        // 4 - EXERCÍCIO 3 → Verificar se é Reservável e está reservado
+        // Exercício 3: se for Reservavel, só empresta se NÃO estiver reservado
         if (itemDoEmprestimo instanceof Reservavel) {
             Reservavel r = (Reservavel) itemDoEmprestimo;
             if (r.isReservado()) {
@@ -48,28 +44,19 @@ public class Biblioteca {
             }
         }
 
-        // 5 - Registrar empréstimo
         itemDoEmprestimo.setStatus(StatusLivro.EMPRESTADO);
 
         LocalDate dataEmprestimo = LocalDate.now();
         LocalDate dataDevolucaoPrevista = dataEmprestimo.plusDays(itemDoEmprestimo.getPrazo());
 
-        Emprestimo emprestimo = new Emprestimo(
-                itemDoEmprestimo,
-                usuarioDoEmprestimo,
-                dataEmprestimo,
-                dataDevolucaoPrevista
-        );
-
+        Emprestimo emprestimo = new Emprestimo(itemDoEmprestimo, usuarioDoEmprestimo, dataEmprestimo, dataDevolucaoPrevista);
         registrosDeEmprestimos.add(emprestimo);
 
         System.out.println("Empréstimo realizado com sucesso!");
         System.out.println("O item '" + itemDoEmprestimo.getTitulo()
-                + "' foi emprestado para o usuário "
-                + usuarioDoEmprestimo.getNome()
+                + "' foi emprestado para o usuário " + usuarioDoEmprestimo.getNome()
                 + " na data " + emprestimo.getDataEmprestimo()
-                + " e deve ser devolvido em "
-                + emprestimo.getDataDevolucaoPrevista());
+                + " e tem de ser devolvido em " + emprestimo.getDataDevolucaoPrevista());
     }
 
     public Emprestimo buscarEmprestimoAtivoPorItem(ItemDoAcervo item) {
@@ -84,28 +71,24 @@ public class Biblioteca {
     }
 
     public void realizarDevolucao(String titulo) {
-
         ItemDoAcervo item = pesquisarItemPorTitulo(titulo);
         if (item == null) {
-            System.out.println("Erro: item não cadastrado.");
+            System.out.println("Erro: esse item não está cadastrado.");
             return;
         }
 
         Emprestimo emprestimo = buscarEmprestimoAtivoPorItem(item);
         if (emprestimo == null) {
-            System.out.println("Erro: empréstimo não encontrado.");
+            System.out.println("Erro: esse empréstimo não existe.");
             return;
         }
 
         LocalDate hoje = LocalDate.now();
-        long dias = ChronoUnit.DAYS.between(
-                emprestimo.getDataDevolucaoPrevista(),
-                hoje
-        );
+        long dias = ChronoUnit.DAYS.between(emprestimo.getDataDevolucaoPrevista(), hoje);
 
         if (dias > 0) {
             double multa = dias * item.getValorMultaPorDia();
-            System.out.println("Item devolvido. Multa: R$" + multa);
+            System.out.println("Item devolvido. Você precisa pagar uma multa de R$" + multa);
         } else {
             System.out.println("Item devolvido.");
         }
@@ -115,7 +98,7 @@ public class Biblioteca {
     }
 
     public ItemDoAcervo pesquisarItemPorTitulo(String titulo) {
-        for (ItemDoAcervo item : acervo) {
+        for (ItemDoAcervo item : this.acervo) {
             if (item.getTitulo().equalsIgnoreCase(titulo)) {
                 return item;
             }
@@ -124,7 +107,7 @@ public class Biblioteca {
     }
 
     public Usuario pesquisarUsuarioPorId(String id) {
-        for (Usuario usuario : listaDeUsuarios) {
+        for (Usuario usuario : this.listaDeUsuarios) {
             if (usuario.getId().equals(id)) {
                 return usuario;
             }
@@ -134,11 +117,12 @@ public class Biblioteca {
 
     public void listarAcervo() {
         System.out.println("Items no Acervo");
-        for (ItemDoAcervo item : acervo) {
+        for (var item : acervo) {
             System.out.println(item);
         }
     }
 
+    // Exercício 4: só cadastra se validar() for true
     public void cadastrarItem(ItemDoAcervo item) {
         if (item instanceof Validavel) {
             Validavel v = (Validavel) item;
@@ -147,57 +131,62 @@ public class Biblioteca {
                 return;
             }
         }
-
         this.acervo.add(item);
         System.out.println("O item " + item.getTitulo() + " foi cadastrado.");
     }
 
+    // Exercício 4: só cadastra se validar() for true
     public void cadastrarUsuario(Usuario usuario) {
         if (!usuario.validar()) {
             System.out.println("Erro: usuário inválido. Cadastro não realizado.");
             return;
         }
-
         this.listaDeUsuarios.add(usuario);
         System.out.println("O usuário " + usuario.getNome() + " foi cadastrado.");
     }
 
-    // EXERCÍCIO 2 → Polimorfismo via interface
+    // Exercício 2
     public void imprimirDocumento(Imprimivel objeto) {
         System.out.println("==================================");
         System.out.println(objeto.formatarParaEtiqueta());
         System.out.println("==================================");
     }
 
+    // MAIN DE TESTES (confere Ex. 1,2,3,4)
     public static void main(String[] args) {
-
-        Livro livroJavaComoProgramar = new Livro("Java Como Programar", "Deitel", 2014, "1234567890123");
-        Livro livroMemoria = new Livro("Memórias Póstumas de Brás Cubas", "Machado de Assis", 1881);
-        Usuario usuario = new Aluno("Thiago", "123");
 
         Biblioteca biblioteca = new Biblioteca();
 
-        Revista revista = new Revista("Veja - Abril", 2015, 1);
+        Livro livroValido = new Livro("Memórias Póstumas de Brás Cubas", "Machado de Assis", 1881, "1234567890123");
+        Livro livroTituloInvalido = new Livro("", "Autor Qualquer", 2020, "1234567890123");
+        Livro livroIsbnInvalido = new Livro("Livro com ISBN ruim", "Autor", 2020, "123");
 
-        biblioteca.cadastrarItem(revista);
-        biblioteca.cadastrarItem(livroJava);
-        biblioteca.cadastrarItem(livroMemoria);
+        Usuario alunoValido = new Aluno("Thiago", "123");
+        Usuario alunoNomeInvalido = new Aluno("Ana", "999");
 
-        biblioteca.cadastrarUsuario(usuario);
+        System.out.println("\n=== TESTE EX4: CADASTRO COM VALIDACAO ===");
+        biblioteca.cadastrarItem(livroValido);
+        biblioteca.cadastrarItem(livroTituloInvalido);
+        biblioteca.cadastrarItem(livroIsbnInvalido);
 
-        // Exercício 2 → imprimir via interface
-        biblioteca.imprimirDocumento(livroMemoria);
-        biblioteca.imprimirDocumento(usuario);
+        biblioteca.cadastrarUsuario(alunoValido);
+        biblioteca.cadastrarUsuario(alunoNomeInvalido);
 
-        biblioteca.listarAcervo();
+        System.out.println("\n=== TESTE EX1/EX2: IMPRIMIVEL + imprimirDocumento ===");
+        biblioteca.imprimirDocumento(livroValido);
+        biblioteca.imprimirDocumento(alunoValido);
 
-        // Exercício 3 → teste de reserva
-        livroMemoria.reservar();
+        System.out.println("\n=== TESTE EX3: RESERVA BLOQUEANDO EMPRESTIMO ===");
+        biblioteca.realizarEmprestimo("123", "Memórias Póstumas de Brás Cubas");
+        biblioteca.realizarDevolucao("Memórias Póstumas de Brás Cubas");
+
+        livroValido.reservar();
         biblioteca.realizarEmprestimo("123", "Memórias Póstumas de Brás Cubas");
 
-        livroMemoria.cancelarReserva();
+        livroValido.cancelarReserva();
         biblioteca.realizarEmprestimo("123", "Memórias Póstumas de Brás Cubas");
 
+        System.out.println("\n=== ACERVO FINAL ===");
         biblioteca.listarAcervo();
     }
 }

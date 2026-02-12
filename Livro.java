@@ -67,7 +67,7 @@ public class Livro extends ItemDoAcervo implements Reservavel, Validavel {
 
     @Override
     public String formatarParaEtiqueta() {
-        return "ETIQUETA - LIVRO: " + getTitulo() + " | Autor: " + autor;
+        return "ETIQUETA - LIVRO: " + getTitulo() + " | Autor: " + autor + " | ISBN: " + isbn;
     }
 
     @Override
