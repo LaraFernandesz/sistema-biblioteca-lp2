@@ -1,6 +1,7 @@
 package src;
 
-public class Livro extends ItemDoAcervo {
+public class Livro extends ItemDoAcervo implements Reservavel {
+    private boolean reservado;
     private String autor;
 
     public Livro(String titulo, String autor, int ano) {
@@ -13,7 +14,7 @@ public class Livro extends ItemDoAcervo {
     }
 
     public void setAutor(String autor) {
-        if (autor.equals("")) {
+        if (autor == null || autor.isEmpty()) {
             System.out.println("Erro: título inválido.");
         } else {
             this.autor = autor;
@@ -35,7 +36,21 @@ public class Livro extends ItemDoAcervo {
         return "Livro '" + getTitulo() + "', de " + autor + " (" + getAno() + ") - Status: " + getStatus();
     }
 
-    // 👇 AQUI você adiciona
+    @Override
+    public void reservar() {
+        this.reservado = true;
+    }
+
+    @Override
+    public void cancelarReserva() {
+        this.reservado = false;
+    }
+
+    @Override
+    public boolean isReservado() {
+        return reservado;
+    }
+
     @Override
     public String formatarParaEtiqueta() {
         return "ETIQUETA - LIVRO: " + getTitulo() + " | Autor: " + autor;
