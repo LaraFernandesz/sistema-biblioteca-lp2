@@ -1,6 +1,6 @@
 package src;
 
-public class ItemDoAcervo {
+public abstract class ItemDoAcervo implements Imprimivel {
     private String titulo;
     private int ano;
     private StatusLivro status;
@@ -29,7 +29,7 @@ public class ItemDoAcervo {
     }
 
     public void setTitulo(String titulo) {
-        if (titulo == "") {
+        if (titulo.isEmpty()) {
             System.out.println("Erro: título inválido.");
         } else {
             this.titulo = titulo;

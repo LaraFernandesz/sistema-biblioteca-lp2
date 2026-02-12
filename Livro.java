@@ -13,7 +13,7 @@ public class Livro extends ItemDoAcervo {
     }
 
     public void setAutor(String autor) {
-        if (autor == "") {
+        if (autor.equals("")) {
             System.out.println("Erro: título inválido.");
         } else {
             this.autor = autor;
@@ -35,4 +35,9 @@ public class Livro extends ItemDoAcervo {
         return "Livro '" + getTitulo() + "', de " + autor + " (" + getAno() + ") - Status: " + getStatus();
     }
 
+    // 👇 AQUI você adiciona
+    @Override
+    public String formatarParaEtiqueta() {
+        return "ETIQUETA - LIVRO: " + getTitulo() + " | Autor: " + autor;
+    }
 }

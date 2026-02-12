@@ -2,7 +2,7 @@ package src;
 
 import java.util.Objects;
 
-public class Usuario {
+public abstract class Usuario implements Imprimivel {
     private String nome;
     private String id;
 
@@ -20,7 +20,7 @@ public class Usuario {
     }
 
     public void setNome(String nome) {
-        if(nome.isEmpty()) {
+        if (nome.isEmpty()) {
             System.out.println("Erro: valor inválido.");
         } else {
             this.nome = nome;
@@ -28,7 +28,7 @@ public class Usuario {
     }
 
     public void setId(String id) {
-        if(id.isEmpty()) {
+        if (id.isEmpty()) {
             System.out.println("Erro: valor inválido.");
         } else {
             this.id = id;

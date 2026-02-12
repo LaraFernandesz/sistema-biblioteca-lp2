@@ -124,7 +124,7 @@ public class Biblioteca {
     public static void main(String[] args) {
         Livro livroJavaComoProgramar = new Livro("Java Como Programar", "Deitel", 2014);
         Livro livroMemoria = new Livro("Memórias Póstumas de Brás Cubas", "Machado de Assis", 1881);
-        Usuario meuUsuario = new Usuario("Thiago", "123");
+        Usuario meuUsuario = new Aluno("Thiago", "123");
         Biblioteca minhaBiblioteca = new Biblioteca();
 
         Revista revistaVeja = new Revista("Veja - Abril", 2015, 1);
