@@ -121,6 +121,12 @@ public class Biblioteca {
         System.out.println("O usuário " + usuario.getNome() + " foi cadastrado.");
     }
 
+    public void imprimirDocumento(Imprimivel objeto) {
+        System.out.println("==================================");
+        System.out.println(objeto.formatarParaEtiqueta());
+        System.out.println("==================================");
+    }
+
     public static void main(String[] args) {
         Livro livroJavaComoProgramar = new Livro("Java Como Programar", "Deitel", 2014);
         Livro livroMemoria = new Livro("Memórias Póstumas de Brás Cubas", "Machado de Assis", 1881);
@@ -132,6 +138,8 @@ public class Biblioteca {
         minhaBiblioteca.cadastrarItem(livroJavaComoProgramar);
         minhaBiblioteca.cadastrarItem(livroMemoria);
         minhaBiblioteca.cadastrarUsuario(meuUsuario);
+        minhaBiblioteca.imprimirDocumento(livroMemoria);
+        minhaBiblioteca.imprimirDocumento(meuUsuario);
         minhaBiblioteca.listarAcervo();
         minhaBiblioteca.realizarEmprestimo("123", "Veja - Abril");
         minhaBiblioteca.listarAcervo();
